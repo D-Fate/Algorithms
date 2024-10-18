@@ -46,16 +46,36 @@ class BinarySearchTree {
 };
 
 
-int main() {
-    std::vector<char> target = {
-        'I', 'Q', 'D', 'N', 'T', 'K', 'P', 'R', 'U', 'J',
-        'L', 'M', 'O', 'B', 'G', 'A', 'C', 'E', 'H', 'F'
-    };
+char getChar() {
+    char result = getchar();
+    int ch;
+    while ((ch = getchar()) != '\n' and ch != EOF);
+    return result;
+}
 
+
+int main() {
     BinarySearchTree bst;
-    for (char t : target) {
-        bst.insert(t);
+    std::cout << "Is input manual? ('y' or 'n')\n>> ";
+    if (getChar() == 'y') {
+        std::cout << "Enter character\n>> ";
+        char input = getChar();
+        while (input != '.' and input != '\n' and input != EOF) {
+            std::cout << std::endl;
+            bst.insert(input);
+            std::cout << "Enter character\n>> ";
+            input = getChar();
+        }
+    } else {
+        std::vector<char> target = {
+            'I', 'Q', 'D', 'N', 'T', 'K', 'P', 'R', 'U', 'J',
+            'L', 'M', 'O', 'B', 'G', 'A', 'C', 'E', 'H', 'F'
+        };
+        for (char t : target) {
+            bst.insert(t);
+        }
     }
+    std::cout << std::endl;
     std::cout << "Original tree:" << std::endl;
     bst.print();
     std::cout << std::endl;
