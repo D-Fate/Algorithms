@@ -7,9 +7,10 @@
 //      2) сортировку строк матрицы методом пузырька по
 //         убыванию сумм элементов, при выводе результирующей
 //         матрицы суммы вывести шестым столбцом.
+#include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include <iostream>
+
 
 const int N = 5;
 
@@ -32,7 +33,7 @@ void destruct(int** matrix) {
 
 int** generateRandomMatrix(int size, int max) {
     int** matrix = createMatrix(size, size);
-    std::srand(std::time(0) * getpid());
+    std::srand(std::time(nullptr));
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
             matrix[i][j] = std::rand() % (max + 1);
