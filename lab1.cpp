@@ -79,15 +79,15 @@ int main() {
     // создание списка
     List list = List();
     // инициализация списка
-    std::cout << "Enter first character\n>> ";
+    std::cout << "Введите первый символ\n>> ";
     char input = getChar();
     while (input != '\n' and input != EOF and input != '.') {
         list.push(input);
-        std::cout << std::endl << "Enter next character\n>> ";
+        std::cout << std::endl << "Введите следующий символ\n>> ";
         input = getChar();
     }
     // вывод списка
-    std::cout << "Original list: ";
+    std::cout << "Исходный список: ";
     list.print();
     // выполнение задания
     Node* current = list.getTail();
@@ -96,7 +96,7 @@ int main() {
         list.push(current->value);
     }
     // повторный вывод списка
-    std::cout << "Result: ";
+    std::cout << "Результат: ";
     list.print();
     
     return 0;

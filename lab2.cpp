@@ -31,7 +31,7 @@ int findElement(char array[], char value) {
 int main() {
     int length = -1;
     while (length < 0) {
-        std::cout << "Enter array length\n>> ";
+        std::cout << "Введите длину массива\n>> ";
         std::cin >> length;
         std::cout << std::endl;
     }
@@ -39,22 +39,22 @@ int main() {
 
     char* array = new char[length];
     for (int i = 0; i < length; i++) {
-        std::cout << "Enter a[" << i << "]\n>> ";
+        std::cout << "Введите a[" << i << "]\n>> ";
         array[i] = getChar();
     }
 
     char target;
-    std::cout << "Enter target element\n>> ";
+    std::cout << "Введите искомый элемент\n>> ";
     target = getChar();
     std::cout << std::endl;
 
-    std::cout << "Entered array: ";
+    std::cout << "Введенный список: ";
     for (int i = 0; i < length; i++) {
         std::cout << array[i] << ' ';
     }
     std::cout << std::endl;
 
-    std::cout << "Target element index: "
+    std::cout << "Номер искомого элемент: "
               << findElement(array, target)
               << std::endl;
     delete[] array;

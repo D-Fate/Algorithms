@@ -66,7 +66,7 @@ int main() {
     // создаем случайную матрицу N * N
     int** matrix = generateRandomMatrix(N, 100);
     // выводим случайную матрицу на экран
-    std::cout << "Orginal matrix:" << std::endl;
+    std::cout << "Исходная матрица:" << std::endl;
     print(matrix, N, N);
     // считаем сумму каждой строки
     int rowSums[N];
@@ -103,7 +103,7 @@ int main() {
         resultMatrix[i][N] = rowSums[i];
     }
     // выводим результирующую матрицу
-    std::cout << "Result matrix:" << std::endl;
+    std::cout << "Результирующая матрица:" << std::endl;
     print(resultMatrix, N, N + 1);
     // освобождаем память
     destruct(resultMatrix);

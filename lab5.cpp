@@ -56,14 +56,14 @@ char getChar() {
 
 int main() {
     BinarySearchTree bst;
-    std::cout << "Is input manual? ('y' or 'n')\n>> ";
+    std::cout << "Ручной ли ввод? ('y' или 'n')\n>> ";
     if (getChar() == 'y') {
-        std::cout << "Enter character\n>> ";
+        std::cout << "Введите символ\n>> ";
         char input = getChar();
         while (input != '.' and input != '\n' and input != EOF) {
             std::cout << std::endl;
             bst.insert(input);
-            std::cout << "Enter character\n>> ";
+            std::cout << "Введите символ\n>> ";
             input = getChar();
         }
     } else {
@@ -76,7 +76,7 @@ int main() {
         }
     }
     std::cout << std::endl;
-    std::cout << "Original tree:" << std::endl;
+    std::cout << "Исходное дерево:" << std::endl;
     bst.print();
     std::cout << std::endl;
 
@@ -84,12 +84,12 @@ int main() {
     for (char e : elementsToInsert) {
         bst.insert(e);
     }
-    std::cout << "Tree with inserted elements:" << std::endl;
+    std::cout << "Дерево со вставленными элементами:" << std::endl;
     bst.print();
     std::cout << std::endl;
 
     bst.remove('F');
-    std::cout << "Tree with deleted elements:" << std::endl;
+    std::cout << "Дерево с удаленными элементами:" << std::endl;
     bst.print();
     std::cout << std::endl;
 
