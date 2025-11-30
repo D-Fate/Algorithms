@@ -62,29 +62,30 @@ int main() {
 
     HashTable<int> table;
     // генерация 256 ключей из диапазона [1, 1000)
-    std::cout << "Generating 256 keys..." << std::endl;
+    std::cout << "Генерирую 256 ключей..." << std::endl;
     for (int i = 0; i < N; i++) {
         int key = std::rand() % 999 + 1;
-        table.add(Pair<int>(key, key * 10));
+        table.add(Pair<int>(key, i * 179));
     }
     
     // вывод хэш-таблицы (пропуская пустые элементы)
-    std::cout << "Hash table contents:" << std::endl;
+    std::cout << "Содержимое хэш-таблицы:" << std::endl;
     table.print();
     std::cout << std::endl;
     
     // поиск ключа
-    std::cout << "Enter key to search\n>> ";
+    std::cout << "Введите ключ для поиска\n>> ";
     int target;
     std::cin >> target;
     
     Pair<int> result = table.search(target);
     if (result.key != -1) {
-        std::cout << "Found key " << result.key 
-                  << " with value " << result.value 
-                  << " at position in table" << std::endl;
+        std::cout << "Найден ключ " << result.key 
+                  << " со значением " << result.value 
+                  << " с номером " << result.value / 179
+                  << " по порядку в таблице" << std::endl;
     } else {
-        std::cout << "Key " << target << " not found" << std::endl;
+        std::cout << "Ключ " << target << " не найден" << std::endl;
     }
     
     return 0;
@@ -152,7 +153,7 @@ template <typename T>
 void HashTable<T>::print() {
     for (int i = 0; i < size_; i++) {
         if (is_occupied_[i]) {
-            std::cout << "Index " << i << ": key=" << buckets_[i].key 
+            std::cout << "Номер " << i << ": key=" << buckets_[i].key 
                       << ", value=" << buckets_[i].value << std::endl;
         }
     }
