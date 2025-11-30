@@ -186,7 +186,7 @@ int main() {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
 
-    std::srand(std::time(0) * getpid());
+    std::srand(std::time(nullptr));
     
     List dates = List();
     for (int i = 0; i < N; i++) {
