@@ -1,14 +1,15 @@
-// Лабораторная работа 4:
-// разработать алгоритм, написать и выполнить программу,
-// реализующую
-//      1) генерацию массива длины 243, наполненного
-//         случайными кириллическими строками, и выводом его на экран,
-//      2) сортировку Шелла по возрастанию,
-//         где h[k + 1] = 3 * h[k] + 1
+// Р›Р°Р±РѕСЂР°С‚РѕСЂРЅР°СЏ СЂР°Р±РѕС‚Р° 4:
+// СЂР°Р·СЂР°Р±РѕС‚Р°С‚СЊ Р°Р»РіРѕСЂРёС‚Рј, РЅР°РїРёСЃР°С‚СЊ Рё РІС‹РїРѕР»РЅРёС‚СЊ РїСЂРѕРіСЂР°РјРјСѓ,
+// СЂРµР°Р»РёР·СѓСЋС‰СѓСЋ
+//      1) РіРµРЅРµСЂР°С†РёСЋ РјР°СЃСЃРёРІР° РґР»РёРЅС‹ 243, РЅР°РїРѕР»РЅРµРЅРЅРѕРіРѕ
+//         СЃР»СѓС‡Р°Р№РЅС‹РјРё РєРёСЂРёР»Р»РёС‡РµСЃРєРёРјРё СЃС‚СЂРѕРєР°РјРё, Рё РІС‹РІРѕРґРѕРј РµРіРѕ РЅР° СЌРєСЂР°РЅ,
+//      2) СЃРѕСЂС‚РёСЂРѕРІРєСѓ РЁРµР»Р»Р° РїРѕ РІРѕР·СЂР°СЃС‚Р°РЅРёСЋ,
+//         РіРґРµ h[k + 1] = 3 * h[k] + 1
 #include <iostream>
+#include <vector>
+#include <string>
 #include <cstdlib>
 #include <ctime>
-#include <windows.h>
 
 
 const int N = 243;
@@ -16,13 +17,18 @@ const int STRING_LENGTH = 4;
 
 
 std::string generateRandomString(int length) {
-    static const char alphabet[] =
-        "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
-        "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
+    static const std::vector<std::string> alphabet = {
+        "Рђ", "Р‘", "Р’", "Р“", "Р”", "Р•", "РЃ", "Р–", "Р—", "Р", "Р™",
+        "Рљ", "Р›", "Рњ", "Рќ", "Рћ", "Рџ", "Р ", "РЎ", "Рў", "РЈ", "Р¤",
+        "РҐ", "Р¦", "Р§", "РЁ", "Р©", "РЄ", "Р«", "Р¬", "Р­", "Р®", "РЇ",
+        "Р°", "Р±", "РІ", "Рі", "Рґ", "Рµ", "С‘", "Р¶", "Р·", "Рё", "Р№",
+        "Рє", "Р»", "Рј", "РЅ", "Рѕ", "Рї", "СЂ", "СЃ", "С‚", "Сѓ", "С„",
+        "С…", "С†", "С‡", "С€", "С‰", "СЉ", "С‹", "СЊ", "СЌ", "СЋ", "СЏ"
+    };
     std::string result;
-    result.reserve(length);
     for (int i = 0; i < length; i++) {
-        result += alphabet[rand() % (sizeof(alphabet) - 1)];
+        int index = rand() % alphabet.size();
+        result += alphabet[index];
     }
     return result;
 }
@@ -30,17 +36,18 @@ std::string generateRandomString(int length) {
 
 void shellSort(std::string array[], int size) {
     int gap = 1;
-    while (gap < (size - 1) / 3) {
+    while (gap < size / 3) {
         gap = 3 * gap + 1;
     }
-    while (gap) {
-        int j;
-        for (int i = gap; i < size; i += 1) {
+    while (gap > 0) {
+        for (int i = gap; i < size; i++) {
             std::string temp = array[i];
-            for (j = i; j >= gap and array[j - gap] > temp; j -= gap) {
+            int j = i;
+            while (j >= gap && array[j - gap] > temp) {
                 array[j] = array[j - gap];
+                j -= gap;
             }
-            array[j] = temp; 
+            array[j] = temp;
         }
         gap = (gap - 1) / 3;
     }
@@ -55,21 +62,19 @@ void print(std::string array[], int size) {
 
 
 int main() {
-    SetConsoleCP(1251);
-    SetConsoleOutputCP(1251);
-
     std::srand(std::time(nullptr));
 
     std::string array[N];
     for (int i = 0; i < N; i++) {
         array[i] = generateRandomString(STRING_LENGTH);
     }
-    std::cout << "Original array:" << std::endl;
+    
+    std::cout << "РСЃС…РѕРґРЅС‹Р№ РјР°СЃСЃРёРІ:" << std::endl;
     print(array, N);
     std::cout << std::endl;
 
     shellSort(array, N);
-    std::cout << "Sorted array:" << std::endl;
+    std::cout << "РћС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹Р№ РјР°СЃСЃРёРІ:" << std::endl;
     print(array, N);
 
     return 0;
