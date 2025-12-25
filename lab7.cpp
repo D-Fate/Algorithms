@@ -16,10 +16,8 @@
 #include <cstdlib>
 #include <ctime>
 
-
 const int N = 256;
 const int TABLE_SIZE = 4096;
-
 
 template <typename T>
 struct Pair {
@@ -30,32 +28,34 @@ struct Pair {
     Pair(int key, T value) : key(key), value(value) {}
 };
 
-
 template <typename T>
 class HashTable {
-    public:
-        void add(Pair<T>);
-        void remove(int);
-        Pair<T> search(int);
-        void print();
+public:
+    void add(Pair<T>);
+    void remove(int);
+    Pair<T> search(int);
+    void print();
 
-        HashTable();
-        ~HashTable();
-    private:
-        int hash(int);
-        int collision_resolve(int, int);
+    HashTable();
+    ~HashTable();
+private:
+    int hash(int);
+    int collision_resolve(int, int);
+    void resize();
 
-        void resize();
+    int size_;
+    int count_;
+    int shift_bits_;
 
-        int size_;
-        int count_;
+    Pair<T>* buckets_;
+    bool* is_occupied_;
 
-        Pair<T>* buckets_;
-        bool* is_occupied_;
-
-        static const int FILL_FACTOR_ = 75;
+    static const int FILL_FACTOR_ = 75;
+    
+    // вспомогательные функции для битовых операций
+    inline int multiply_hash(int key) const;
+    inline int quadratic_probe(int base, int attempt) const;
 };
-
 
 int main() {
     std::srand(std::time(nullptr));
@@ -90,7 +90,6 @@ int main() {
     
     return 0;
 }
-
 
 template <typename T>
 void HashTable<T>::add(Pair<T> pair) {
@@ -159,9 +158,15 @@ void HashTable<T>::print() {
     }
 }
 
-
 template <typename T>
 HashTable<T>::HashTable() : size_(TABLE_SIZE), count_(0) {
+    // Вычисляем количество бит для сдвига (log2(TABLE_SIZE))
+    shift_bits_ = 0;
+    int temp = size_;
+    while (temp >>= 1) {
+        shift_bits_++;
+    }
+    
     buckets_ = new Pair<T>[size_];
     is_occupied_ = new bool[size_];
     for (int i = 0; i < size_; i++) {
@@ -175,24 +180,44 @@ HashTable<T>::~HashTable() {
     delete[] is_occupied_;
 }
 
+template <typename T>
+inline int HashTable<T>::multiply_hash(int key) const {
+    // используем золотое сечение (φ = (√5 - 1)/2 ≈ 0.6180339887)
+    // представляем как A = 2^32 * φ ≈ 2654435769
+    const unsigned int A = 0x9E3779B9; // 2654435769 в hex
+    
+    // умножение с использованием битовых операций
+    unsigned long long product = (unsigned long long)key * A;
+    
+    // извлекаем старшие биты (метод умножения через сдвиг)
+    return (int)(product >> (32 - shift_bits_));
+}
+
+template <typename T>
+inline int HashTable<T>::quadratic_probe(int base, int attempt) const {
+    // (base + attempt²) mod size_
+    // attempt² вычисляется как attempt << 1 (для малых attempt) или через умножение
+    int square = attempt * attempt;
+    return (base + square) & (size_ - 1); // size_ - степень двойки, поэтому & вместо %
+}
 
 template <typename T>
 int HashTable<T>::hash(int key) {
-    const double A = 0.6180339887;
-    double product = key * A;
-    double fractional = product - static_cast<int>(product);
-    return static_cast<int>(size_ * fractional);
+    return multiply_hash(key) & (size_ - 1);
 }
 
 template <typename T>
 int HashTable<T>::collision_resolve(int hash, int attempt) {
-    return (hash + attempt * attempt) % size_;
+    return quadratic_probe(hash, attempt);
 }
 
 template <typename T>
 void HashTable<T>::resize() {
     int old_size = size_;
     size_ *= 2;
+    
+    // обновляем shift_bits_ для нового размера
+    shift_bits_++;
     
     Pair<T>* old_buckets = buckets_;
     bool* old_occupied = is_occupied_;
