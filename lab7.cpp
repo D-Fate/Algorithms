@@ -160,7 +160,7 @@ void HashTable<T>::print() {
 
 template <typename T>
 HashTable<T>::HashTable() : size_(TABLE_SIZE), count_(0) {
-    // Вычисляем количество бит для сдвига (log2(TABLE_SIZE))
+    // вычисляем количество бит для сдвига (log2(TABLE_SIZE))
     shift_bits_ = 0;
     int temp = size_;
     while (temp >>= 1) {
