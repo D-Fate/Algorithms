@@ -83,7 +83,7 @@ int main() {
     for (int i = 0; i < N - 1; i++) {
         isChanged = false;
         for (int j = 0; j < N - i - 1; j++) {
-            if (rowSums[j] > rowSums[j + 1]) {
+            if (rowSums[j] < rowSums[j + 1]) {
                 std::swap(rowSums[j], rowSums[j + 1]);
                 std::swap(rowIndexes[j], rowIndexes[j + 1]);
                 isChanged = true;
